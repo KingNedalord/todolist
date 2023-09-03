@@ -18,6 +18,7 @@ class _Main_PageState extends State<Main_Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text("To do List"),),
       body: Column(
         children: [
           Expanded(
@@ -48,14 +49,14 @@ class _Main_PageState extends State<Main_Page> {
                                             child: Text("Cancel")),
                                         TextButton(
                                             onPressed: () {
-                                              box.delete(index);
+                                              box.deleteAt(index);
                                               Navigator.pop(context);
                                             },
                                             child: Text("Yes")),
                                       ]);
                                 });
                           },
-                          icon: Icon(Icons.delete),
+                          icon: Icon(Icons.delete,color: Colors.red[500]),
                         ),
                       );
                     },
@@ -63,58 +64,63 @@ class _Main_PageState extends State<Main_Page> {
                   );
                 }),
           ),
-          FloatingActionButton(
-            onPressed: () {},
-            child: IconButton(
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text("New task"),
-                        content: Container(
-                          width: 150,
-                          height: 150,
-                          child: Column(
-                            children: [
-                              TextField(
-                                controller: titleController,
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    hintText: "Enter title"),
-                              ),
-                              TextField(
-                                controller: comController,
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    hintText: "Enter comment"),
-                              ),
-                            ],
+          Padding(
+            padding: const EdgeInsets.all(19.0),
+            child: FloatingActionButton(
+              backgroundColor: Colors.amber[150],
+              onPressed: () {},
+              child: IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text("New task"),
+                          content: Container(
+                            width: 150,
+                            height: 150,
+                            child: Column(
+                              children: [
+                                TextField(
+                                  controller: titleController,
+                                  decoration: InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      hintText: "Enter title"),
+                                ),
+                                TextField(
+                                  controller: comController,
+                                  decoration: InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      hintText: "Enter comment"),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        actions: [
-                          TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text("Close")),
-                          TextButton(
-                              onPressed: () {
-                                if (titleController.text != "" &&
-                                    comController.text != "") {
-                                  Tasks tasks = Tasks(
-                                      title: titleController.text,
-                                      comment: comController.text);
-                                  box.add(tasks);
+                          actions: [
+                            TextButton(
+                                onPressed: () {
                                   Navigator.pop(context);
-                                }
-                              },
-                              child: Text("Add")),
-                        ],
-                      );
-                    });
-              },
-              icon: Icon(Icons.add),
+                                },
+                                child: Text("Close")),
+                            TextButton(
+                                onPressed: () {
+                                  if (titleController.text != "") {
+                                    Tasks tasks = Tasks(
+                                        title: titleController.text,
+                                        comment: comController.text);
+                                    box.add(tasks);
+                                    titleController.text = "";
+                                    comController.text = "";
+                                    Navigator.pop(context);
+                                  }
+                                },
+                                child: Text("Add")),
+                          ],
+                        );
+                      });
+                },
+                icon: Icon(Icons.add),
+              ),
             ),
           )
         ],
